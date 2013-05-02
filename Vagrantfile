@@ -31,4 +31,7 @@ Vagrant::Config.run do |config|
     end
   end
 
+  # Map the ckan source code (parent directory) to /vagrant
+  config.vm.share_folder "ckan", "/vagrant", ".."
+
 end
