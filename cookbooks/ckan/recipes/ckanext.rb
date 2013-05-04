@@ -16,8 +16,10 @@ pg_user "readonlyuser" do
 end
 
 pg_database "datastore" do
-  owner "ckanuser"
-  encoding "utf8"
+  encoding    "utf8"
+  locale      "en_US.utf8"
+  owner       "ckanuser"
+  template    "template0"
 end
 
 # Configure database variables
