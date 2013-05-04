@@ -2,7 +2,7 @@ USER = node[:user]
 HOME = "/home/#{USER}"
 ENV['VIRTUAL_ENV'] = "#{HOME}/pyenv"
 ENV['PATH'] = "#{ENV['VIRTUAL_ENV']}/bin:#{ENV['PATH']}"
-SOURCE_DIR = "#{ENV['VIRTUAL_ENV']}/src/ckan"
+SOURCE_DIR = "/vagrant"
 
 # Create Database
 pg_user "ckanuser" do

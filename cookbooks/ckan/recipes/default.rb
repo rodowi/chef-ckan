@@ -8,7 +8,7 @@ USER = node[:user]
 HOME = "/home/#{USER}"
 ENV['VIRTUAL_ENV'] = "#{HOME}/pyenv"
 ENV['PATH'] = "#{ENV['VIRTUAL_ENV']}/bin:#{ENV['PATH']}"
-SOURCE_DIR = "#{ENV['VIRTUAL_ENV']}/src/ckan"
+SOURCE_DIR = "/vagrant"
 
 # Create user
 user USER do
@@ -26,7 +26,7 @@ python_virtualenv ENV['VIRTUAL_ENV'] do
 end
 
 # Install CKAN Package
-python_pip "git+https://github.com/okfn/ckan.git#egg=ckan" do
+python_pip SOURCE_DIR do
   user USER
   group USER
   virtualenv ENV['VIRTUAL_ENV']
@@ -108,3 +108,4 @@ execute "running tests with SQLite" do
   cwd SOURCE_DIR
   command "nosetests --ckan ckan"
 end
+
