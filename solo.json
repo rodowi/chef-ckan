@@ -8,5 +8,13 @@
   "postgresql": {
     "version": "9.1",
     "ssl": false
+  },
+  "filestore": {
+    "s3": true,
+    "s3_config": {
+      "access_key_id": "...",
+      "secret_access_key": "...",
+      "bucket": "bucket-name"
+    }
   }
 }
