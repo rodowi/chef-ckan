@@ -10,6 +10,13 @@ ENV['VIRTUAL_ENV'] = "#{HOME}/pyenv"
 ENV['PATH'] = "#{ENV['VIRTUAL_ENV']}/bin:#{ENV['PATH']}"
 SOURCE_DIR = "/vagrant"
 
+FILESTORE = {
+  :bucket => ENV['FILESTORE_BUCKET'],
+  :access_key_id => ENV['FILESTORE_S3_ACCESS_KEY_ID'],
+  :secret_access_key => ENV['FILESTORE_S3_SECRET_ACCESS_KEY']
+}
+
+
 # Create user
 user USER do
   home HOME
@@ -79,8 +86,9 @@ service "jetty" do
   action [:enable, :start]
 end
 
+
 filestore_ini_changes = ""
-if node[:filestore][:s3]
+if FILESTORE[:bucket]
   python_pip "boto" do
     user USER
     group USER
@@ -88,8 +96,8 @@ if node[:filestore][:s3]
     action :install
   end
 
-  storage = ";s/.*ckan\\.storage\\.bucket.*/ckan.storage.bucket=#{node[:filestore][:s3_config][:bucket]}/"
-  aws_tokens = "s/.*ofs\\.aws_access_key_id.*/ofs.aws_access_key_id=#{node[:filestore][:s3_config][:access_key_id]}/;s/.*ofs\\.aws_secret_access_key.*/ofs.aws_secret_access_key=#{node[:filestore][:s3_config][:secret_access_key]}/"
+  storage = ";s/.*ckan\\.storage\\.bucket.*/ckan.storage.bucket=#{FILESTORE[:bucket]}/"
+  aws_tokens = "s/.*ofs\\.aws_access_key_id.*/ofs.aws_access_key_id=#{FILESTORE[:access_key_id]}/;s/.*ofs\\.aws_secret_access_key.*/ofs.aws_secret_access_key=#{FILESTORE[:secret_access_key]}/"
 
   filestore_ini_changes = [storage, aws_tokens].join(";")
 
