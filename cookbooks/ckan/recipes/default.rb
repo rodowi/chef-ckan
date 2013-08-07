@@ -3,12 +3,13 @@ include_recipe "python"
 include_recipe "postgresql::server"
 include_recipe "postgresql::libpq"
 include_recipe "java"
+include_recipe "apache2"
 
 USER = node[:user]
 HOME = "/home/#{USER}"
 ENV['VIRTUAL_ENV'] = "#{HOME}/pyenv"
 ENV['PATH'] = "#{ENV['VIRTUAL_ENV']}/bin:#{ENV['PATH']}"
-SOURCE_DIR = "/vagrant"
+SOURCE_DIR = "#{HOME}/chef"
 
 FILESTORE = {
   :bucket => ENV['FILESTORE_BUCKET'],
