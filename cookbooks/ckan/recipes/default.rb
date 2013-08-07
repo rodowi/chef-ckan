@@ -4,6 +4,7 @@ include_recipe "postgresql::server"
 include_recipe "postgresql::libpq"
 include_recipe "java"
 include_recipe "apache2"
+include_recipe "apache2::mod_wsgi"
 
 USER = node[:user]
 HOME = "/home/#{USER}"
@@ -118,6 +119,31 @@ execute "create database tables" do
   user USER
   cwd SOURCE_DIR
   command "paster --plugin=ckan db init"
+end
+
+#Create WSGI script file
+template "#{SOURCE_DIR}/apache.wsgi" do
+  source "apache.wsgi.erb"
+  variables({
+    :home_dir => HOME,
+    :source_dir => SOURCE_DIR,
+    :deployment_env => "development"
+  })
+end
+
+# Create CKAN Apache config file
+template "/etc/apache2/sites-available/ckan_default" do
+  source "ckan_default.erb"
+  variables({
+    :source_dir => SOURCE_DIR,
+    :server_name => "datos.codeandomexico.org",
+    :server_alias => "datos.codeandomexico.org"
+  })
+end
+
+execute "Enable the ckan sites" do
+  command "sudo a2ensite ckan_default && sudo service apache2 reload"
+  action :run
 end
 
 # Run tests
