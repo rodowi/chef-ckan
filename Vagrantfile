@@ -21,6 +21,7 @@ Vagrant::Config.run do |config|
 
   config.vm.forward_port 8983, 8983
   config.vm.forward_port 5000, 5000
+  config.vm.forward_port 80, 8888
 
   config.vm.provision :chef_solo do |chef|
     chef.cookbooks_path = "cookbooks"
@@ -32,6 +33,6 @@ Vagrant::Config.run do |config|
   end
 
   # Map the ckan source code (parent directory) to ~/chef
-  config.vm.share_folder "ckan", "/home/vagrant/chef", "..", :create => true
+  config.vm.share_folder "ckan", "/home/vagrant/chef", "..", :create => true, :extra => "dmode=755,fmode=755"
 
 end
