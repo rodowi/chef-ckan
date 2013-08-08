@@ -141,6 +141,11 @@ template "/etc/apache2/sites-available/ckan_default" do
   })
 end
 
+execute "Create Error log files" do
+  command "sudo touch /var/www/ckan.log && sudo chown www-data /var/www/ckan.log"
+  action :run
+end
+
 execute "Enable the ckan sites" do
   command "sudo a2ensite ckan_default && sudo service apache2 reload"
   action :run
