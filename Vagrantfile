@@ -27,6 +27,7 @@ Vagrant::Config.run do |config|
     chef.cookbooks_path = "cookbooks"
     chef.json = JSON.parse(File.read(chef_json))
     chef.json["user"] = "vagrant"
+    chef.json["environment"] =  ENV["ENVIRONMENT"] || "development"
     chef.json["run_list"].each do |recipe|
       chef.add_recipe recipe
     end

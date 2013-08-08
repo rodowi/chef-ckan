@@ -110,8 +110,8 @@ execute "make paster's config file and setup solr_url and ckan.site_id" do
   user USER
   cwd SOURCE_DIR
 
-  command "paster make-config ckan development.ini --no-interactive && sed -i -e 's/.*solr_url.*/solr_url=http:\\/\\/127.0.0.1:8983\\/solr/;s/.*ckan\\.site_id.*/ckan.site_id=vagrant_ckan/#{filestore_ini_changes}' development.ini"
-  creates "#{SOURCE_DIR}/development.ini"
+  command "paster make-config ckan #{node[:environment]}.ini --no-interactive && sed -i -e 's/.*solr_url.*/solr_url=http:\\/\\/127.0.0.1:8983\\/solr/;s/.*ckan\\.site_id.*/ckan.site_id=vagrant_ckan/#{filestore_ini_changes}' #{node[:environment]}.ini"
+  creates "#{SOURCE_DIR}/#{node[:environment]}.ini"
 end
 
 # Generate database
@@ -127,7 +127,7 @@ template "#{SOURCE_DIR}/apache.wsgi" do
   variables({
     :home_dir => HOME,
     :source_dir => SOURCE_DIR,
-    :deployment_env => "development"
+    :deployment_env => node[:environment]
   })
 end
 
@@ -136,8 +136,8 @@ template "/etc/apache2/sites-available/ckan_default" do
   source "ckan_default.erb"
   variables({
     :source_dir => SOURCE_DIR,
-    :server_name => "datos.codeandomexico.org",
-    :server_alias => "datos.codeandomexico.org"
+    :server_name => node[:ckan][:server_name],
+    :server_alias => node[:ckan][:server_alias]
   })
 end
 
