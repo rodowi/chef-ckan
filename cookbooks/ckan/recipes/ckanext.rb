@@ -2,7 +2,7 @@ USER = node[:user]
 HOME = "/home/#{USER}"
 ENV['VIRTUAL_ENV'] = "#{HOME}/pyenv"
 ENV['PATH'] = "#{ENV['VIRTUAL_ENV']}/bin:#{ENV['PATH']}"
-SOURCE_DIR = "/vagrant"
+SOURCE_DIR = "#{HOME}/chef"
 
 # Create Database
 pg_user "ckanuser" do
